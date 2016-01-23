@@ -5,6 +5,8 @@
  */
 
 var app = require('../app');
+var expressapp = app.app;
+var socketServer = app.socketServer;
 var debug = require('debug')('node-chat:server');
 var http = require('http');
 
@@ -13,14 +15,15 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+expressapp.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(expressapp);
 
+socketServer.installHandlers(server, app.socketOptions);
 /**
  * Listen on provided port, on all network interfaces.
  */
